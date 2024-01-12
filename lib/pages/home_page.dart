@@ -3,8 +3,10 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:order/component/order.dart';
 import 'package:order/pages/accepted_page.dart';
+import 'package:order/pages/waiter_order_page.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:http/http.dart' as http;
 
@@ -80,7 +82,32 @@ class _HomePageState extends State<HomePage> {
       },
       child: Scaffold(
         appBar: AppBar(
-          title: Text('Order Page'),
+          title: Text(
+            'Food Ordering App',
+            style:
+                GoogleFonts.cinzel(fontSize: 20, fontWeight: FontWeight.bold),
+          ),
+          leading: Builder(
+            builder: (context) {
+              return IconButton(
+                onPressed: () {
+                  Scaffold.of(context).openDrawer();
+                },
+                icon: Icon(
+                  Icons.menu_outlined,
+                ),
+              );
+            },
+          ),
+          actions: [
+            IconButton(
+              onPressed: () {
+                Navigator.of(context).push(
+                    MaterialPageRoute(builder: (context) => WaiterOrder()));
+              },
+              icon: Icon(Icons.person),
+            ),
+          ],
         ),
         body: isLoading
             ? Container(
@@ -151,7 +178,7 @@ class _HomePageState extends State<HomePage> {
                                               "title": orders[index].title,
                                               "table": orders[index].table
                                             });
-                                        print(response.body);
+
                                         setState(() {
                                           orders.remove(orders[index]);
                                         });
