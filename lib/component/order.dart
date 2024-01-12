@@ -3,5 +3,9 @@ class Order {
   final String number;
   final String table;
   final String price;
-  Order(this.title, this.number, this.table, this.price);
+  Order(
+      {required this.title,
+      required this.number,
+      required this.table,
+      required this.price});
 }

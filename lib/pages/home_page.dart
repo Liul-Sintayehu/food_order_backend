@@ -1,8 +1,12 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:order/component/order.dart';
 import 'package:order/pages/accepted_page.dart';
 import 'package:shimmer/shimmer.dart';
+import 'package:http/http.dart' as http;
 
 class HomePage extends StatefulWidget {
   HomePage({super.key});
@@ -15,15 +19,11 @@ class _HomePageState extends State<HomePage> {
   bool isLoading = true;
   List orders = [];
   List acceptedOrders = [];
+  List file = [];
 
   @override
   void initState() {
-    Future.delayed(Duration(seconds: 5), () {
-      setState(() {
-        isLoading = false;
-        orders = ['data0', 'data1', 'data2'];
-      });
-    });
+    getOrders();
 
     // TODO: implement initState
     super.initState();
@@ -37,13 +37,27 @@ class _HomePageState extends State<HomePage> {
   //     });
   //   });
   // }
-  reload() {
-    Future.delayed(Duration(seconds: 5), () {
-      setState(() {
-        isLoading = false;
-        orders = ['data0', 'data1', 'data2'];
-      });
+  getOrders() async {
+    file = [];
+    // 'https://restorant-backend-i0ix.onrender.com/';
+    // http://10.0.2.2:3003
+    final uri =
+        Uri.parse('https://restorant-backend-i0ix.onrender.com/getorders');
+    var response = await http.get(uri);
+    var responseData = json.decode(response.body);
+    for (var ord in responseData) {
+      Order order = Order(
+          title: ord['title'],
+          number: ord['amount'],
+          price: ord['price'],
+          table: ord['table']);
+      file.add(order);
+    }
+    setState(() {
+      isLoading = false;
+      orders = file;
     });
+    print(orders);
   }
 
   @override
@@ -54,7 +68,7 @@ class _HomePageState extends State<HomePage> {
         setState(() {
           isLoading = true;
         });
-        reload();
+        getOrders();
       },
       child: Scaffold(
         appBar: AppBar(
@@ -94,10 +108,10 @@ class _HomePageState extends State<HomePage> {
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.spaceAround,
                               children: [
-                                Text('title'),
-                                Text('Number of order'),
-                                Text('table number'),
-                                Text('price'),
+                                Text('title: ' + orders[index].title),
+                                Text('no of order : ' + orders[index].number),
+                                Text('price: ' + orders[index].price),
+                                Text('table no.: ' + orders[index].table),
                                 Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceAround,

@@ -31,10 +31,10 @@ class _AcceptedPageState extends State<AcceptedPage> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
-                        Text('title'),
-                        Text('Number of order'),
-                        Text('table number'),
-                        Text('price'),
+                        Text('title: ' + widget.orders[index].title),
+                        Text('no of order : ' + widget.orders[index].number),
+                        Text('price: ' + widget.orders[index].price),
+                        Text('table no.: ' + widget.orders[index].table),
                         ElevatedButton(
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.green[300],
