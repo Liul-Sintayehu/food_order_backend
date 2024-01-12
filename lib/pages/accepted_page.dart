@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors
 
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 
 class AcceptedPage extends StatefulWidget {
   final List orders;
@@ -39,7 +40,13 @@ class _AcceptedPageState extends State<AcceptedPage> {
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.green[300],
                           ),
-                          onPressed: () {
+                          onPressed: () async {
+                            final uri = Uri.parse(
+                                'https://restorant-backend-i0ix.onrender.com/deleteorder');
+                            var response = await http.post(uri, body: {
+                              "title": widget.orders[index].title,
+                              "table": widget.orders[index].table
+                            });
                             setState(() {
                               widget.orders.remove(widget.orders[index]);
                             });
