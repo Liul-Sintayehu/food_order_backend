@@ -60,6 +60,14 @@ class _HomePageState extends State<HomePage> {
     print(orders);
   }
 
+  // deleteOrder() async {
+  //   final uri =
+  //       Uri.parse('http://restorant-backend-i0ix.onrender.com/deleteorder');
+  //   var response = await http.post(uri);
+
+  //   setState(() {});
+  // }
+
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
@@ -135,7 +143,15 @@ class _HomePageState extends State<HomePage> {
                                       style: ElevatedButton.styleFrom(
                                         backgroundColor: Colors.red[300],
                                       ),
-                                      onPressed: () {
+                                      onPressed: () async {
+                                        final uri = Uri.parse(
+                                            'https://restorant-backend-i0ix.onrender.com/deleteorder');
+                                        var response = await http.post(uri,
+                                            body: {
+                                              "title": orders[index].title,
+                                              "table": orders[index].table
+                                            });
+                                        print(response.body);
                                         setState(() {
                                           orders.remove(orders[index]);
                                         });
